@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import sqlit.runner.SqlitRunner;
 
+import java.io.IOException;
 import java.net.ConnectException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,6 +30,17 @@ public class ClientTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    void should_show_tables() throws IOException {
+        runSqlitServer();
+        Client client = new Client("localhost", 3000);
+        client.connect();
+
+        String result = client.exec("show tables;");
+
+        assertThat(result).isEqualTo("No table found.");
     }
 
     @Test
