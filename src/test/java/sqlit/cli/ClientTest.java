@@ -12,17 +12,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ClientTest {
     @Test
     void should_connect_to_running_instance() throws ConnectException {
-        runSqlitServer();
+        SqlitRunner server = runSqlitServer();
         Client client = new Client("localhost", 3000);
 
         client.connect();
 
         assertThat(client.isConnected()).isTrue();
+        server.shutdown();
     }
 
-    private void runSqlitServer() {
+    private SqlitRunner runSqlitServer() {
+        final SqlitRunner runner = new SqlitRunner();
         new Thread(() -> {
-            SqlitRunner runner = new SqlitRunner();
             runner.run();
         }).start();
         try {
@@ -30,17 +31,19 @@ public class ClientTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        return runner;
     }
 
     @Test
     void should_show_tables() throws IOException {
-        runSqlitServer();
+        SqlitRunner server = runSqlitServer();
         Client client = new Client("localhost", 3000);
         client.connect();
 
         String result = client.exec("show tables;");
 
         assertThat(result).isEqualTo("No table found.");
+        server.shutdown();
     }
 
     @Test
