@@ -2,6 +2,12 @@ pipeline {
     agent any
 
     stages {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
         stage('SCM') {
             steps {
                 checkout scm
@@ -10,7 +16,7 @@ pipeline {
 
         stage('Unit Test') {
             steps {
-                sh './gradlew test'
+                sh './gradlew clean test'
             }
         }
 
