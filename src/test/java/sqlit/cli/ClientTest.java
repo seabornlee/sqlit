@@ -9,7 +9,7 @@ import java.net.ConnectException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ClientTest {
+class ClientTest {
     @Test
     void should_connect_to_running_instance() throws ConnectException {
         SqlitRunner server = new SqlitRunner();
