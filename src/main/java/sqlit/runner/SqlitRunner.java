@@ -24,11 +24,17 @@ public class SqlitRunner {
         }
     }
 
-    public void shutdown() {
+    public boolean shutdown() {
+        if (serverSocket == null) {
+            return false;
+        }
+
         try {
             serverSocket.close();
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
     }
 }
