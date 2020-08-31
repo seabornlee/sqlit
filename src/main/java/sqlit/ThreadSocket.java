@@ -1,10 +1,12 @@
 package sqlit;
 
+import sqlit.executor.SqlExecutor;
+
 import java.io.*;
 import java.net.Socket;
 
 public class ThreadSocket extends Thread {
-    private Socket socket;
+    private final Socket socket;
 
     public ThreadSocket(Socket socket) {
         this.socket = socket;
@@ -12,14 +14,15 @@ public class ThreadSocket extends Thread {
 
     @Override
     public void run() {
-        System.out.println("Connected.");
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String statement = bufferedReader.readLine();
-            System.out.println("statement = " + statement);
+
+            String result = new SqlExecutor().execute(statement);
+
             OutputStream outputStream = socket.getOutputStream();
             PrintWriter printWriter = new PrintWriter(outputStream);
-            printWriter.write("No table found.");
+            printWriter.write(result);
             printWriter.write('\n');
             printWriter.flush();
         } catch (IOException e) {
