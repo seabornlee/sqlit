@@ -13,19 +13,24 @@ public class SqlitRunner {
     public void run() {
         try {
             serverSocket = new ServerSocket(3000);
-            System.out.println("Server started.");
-            while (true) {
-                Socket socket = serverSocket.accept();
-                ThreadSocket threadSocket = new ThreadSocket(socket);
-                threadSocket.start();
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        new Thread(() -> {
+            while (!serverSocket.isClosed()) {
+                try {
+                    Socket socket = serverSocket.accept();
+                    ThreadSocket threadSocket = new ThreadSocket(socket);
+                    threadSocket.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public boolean shutdown() {
-        if (serverSocket == null) {
+        if (!isRunning()) {
             return false;
         }
 
@@ -36,5 +41,9 @@ public class SqlitRunner {
             e.printStackTrace();
             return false;
         }
+    }
+
+    private boolean isRunning() {
+        return serverSocket != null;
     }
 }
