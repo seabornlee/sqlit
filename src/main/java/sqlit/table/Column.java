@@ -18,9 +18,6 @@ public class Column {
         this.length = length;
     }
 
-    public Column() {
-    }
-
     public int getLength() {
         return length;
     }
