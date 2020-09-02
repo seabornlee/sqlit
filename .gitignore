@@ -129,3 +129,4 @@ gradle-app.setting
 .idea/misc.xml
 .idea/sonarlint.xml
 .idea/sonarlint-state.xml
+sqlit.db
