@@ -13,27 +13,20 @@ public class Dbms {
 
     public boolean createTable(TableDefinition tableDefinition) {
         String json = JSON.toJSONString(tableDefinition);
-        appendTable(json);
+        writeText(json);
         return true;
     }
 
-    private void appendTable(String json) {
-        writeText(json);
-    }
-
     private void writeText(String json) {
-        try {
-            PrintWriter printWriter = new PrintWriter(new FileOutputStream(new File("./sqlit.db")));
+        try (PrintWriter printWriter = new PrintWriter(new FileOutputStream(new File("./" + DEFAULT_FILE_NAME)))) {
             printWriter.println(json);
-            printWriter.close();
         } catch (FileNotFoundException e) {
             logger.log(Level.WARNING, e.getMessage());
         }
     }
 
     public String showTables() {
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("./" + DEFAULT_FILE_NAME)));
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("./" + DEFAULT_FILE_NAME)))) {
             String json = bufferedReader.readLine();
             TableDefinition tableDefinition = JSON.parseObject(json, TableDefinition.class);
             return tableDefinition.getTableName();
