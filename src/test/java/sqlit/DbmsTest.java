@@ -37,6 +37,17 @@ class DbmsTest {
     }
 
     @Test
+    void should_drop_table() {
+        Dbms dbms = new Dbms();
+        dbms.createTable(getTableDefinition("Users"));
+
+        dbms.dropTable("Users");
+
+        String tables = dbms.showTables();
+        assertThat(tables).isEqualTo("No table found.");
+    }
+
+    @Test
     void should_create_multiple_tables() {
         Dbms dbms = new Dbms();
 
