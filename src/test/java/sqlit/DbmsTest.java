@@ -30,16 +30,30 @@ class DbmsTest {
     void should_create_table() {
         Dbms dbms = new Dbms();
 
-        TableDefinition td = new TableDefinition();
-        td.setTableName("Users");
-        Column column= new Column();
-        column.setName("UserId");
-        column.setType("int");
-        td.addColumn(column);
-
-        dbms.createTable(td);
+        dbms.createTable(getTableDefinition("Users"));
 
         String tables = dbms.showTables();
         assertThat(tables).isEqualTo("Users");
+    }
+
+    @Test
+    void should_create_multiple_tables() {
+        Dbms dbms = new Dbms();
+
+        dbms.createTable(getTableDefinition("Users"));
+        dbms.createTable(getTableDefinition("Orders"));
+
+        String tables = dbms.showTables();
+        assertThat(tables).isEqualTo("Users\r\nOrders");
+    }
+
+    private TableDefinition getTableDefinition(String tableName) {
+        TableDefinition td = new TableDefinition();
+        td.setTableName(tableName);
+        Column column = new Column();
+        column.setName("UserId");
+        column.setType("int");
+        td.addColumn(column);
+        return td;
     }
 }
