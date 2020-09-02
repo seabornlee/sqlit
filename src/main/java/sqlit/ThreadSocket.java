@@ -4,8 +4,12 @@ import sqlit.executor.SqlExecutor;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ThreadSocket extends Thread {
+    private static final Logger logger = Logger.getLogger(ThreadSocket.class.getPackage().getName());
+
     private final Socket socket;
 
     public ThreadSocket(Socket socket) {
@@ -26,7 +30,7 @@ public class ThreadSocket extends Thread {
             printWriter.write('\n');
             printWriter.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, e.getMessage());
         }
     }
 }

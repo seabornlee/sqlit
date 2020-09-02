@@ -5,8 +5,11 @@ import sqlit.ThreadSocket;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SqlitRunner {
+    private static final Logger logger = Logger.getLogger(SqlitRunner.class.getPackage().getName());
 
     private ServerSocket serverSocket;
 
@@ -14,7 +17,7 @@ public class SqlitRunner {
         try {
             serverSocket = new ServerSocket(3000);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, e.getMessage());
         }
         new Thread(() -> {
             while (!serverSocket.isClosed()) {
@@ -23,7 +26,7 @@ public class SqlitRunner {
                     ThreadSocket threadSocket = new ThreadSocket(socket);
                     threadSocket.start();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.log(Level.WARNING, e.getMessage());
                 }
             }
         }).start();
@@ -38,7 +41,7 @@ public class SqlitRunner {
             serverSocket.close();
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, e.getMessage());
             return false;
         }
     }
