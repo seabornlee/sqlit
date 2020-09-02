@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 public class Dbms {
     private static final Logger logger = Logger.getLogger(Dbms.class.getPackage().getName());
+    public static final String DEFAULT_FILE_NAME = "sqlit.db";
 
     public boolean createTable(TableDefinition tableDefinition) {
         String json = JSON.toJSONString(tableDefinition);
@@ -32,13 +33,13 @@ public class Dbms {
 
     public String showTables() {
         try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("./sqlit.db")));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream("./" + DEFAULT_FILE_NAME)));
             String json = bufferedReader.readLine();
             TableDefinition tableDefinition = JSON.parseObject(json, TableDefinition.class);
             return tableDefinition.getTableName();
         } catch (IOException e) {
             logger.log(Level.WARNING, e.getMessage());
         }
-        return "";
+        return "No table found.";
     }
 }
