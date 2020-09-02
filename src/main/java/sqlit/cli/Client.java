@@ -7,8 +7,12 @@ import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Client {
+    private static final Logger logger = Logger.getLogger(Client.class.getPackage().getName());
+
     private final String host;
     private final int port;
     private boolean isConnected;
@@ -25,7 +29,7 @@ public class Client {
             socket.connect(new InetSocketAddress(host, port));
             isConnected = true;
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, e.getMessage());
             throw new ConnectException("Cannot connect to [localhost:3000]. Probably server not running.");
         }
     }
