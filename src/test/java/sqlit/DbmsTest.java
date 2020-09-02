@@ -2,6 +2,7 @@ package sqlit;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import sqlit.statement.InsertStatement;
 import sqlit.table.Column;
 import sqlit.table.TableDefinition;
 
@@ -66,5 +67,18 @@ class DbmsTest {
         column.setType("int");
         td.addColumn(column);
         return td;
+    }
+
+    @Test
+    void should_insert_record() {
+        Dbms dbms = new Dbms();
+        dbms.createTable(getTableDefinition("Users"));
+        InsertStatement insertStatement = new InsertStatement();
+        insertStatement.setTableName("Users");
+        insertStatement.addColumn("UserId", "1");
+
+        boolean isSuccessfully = dbms.insert(insertStatement);
+
+        assertThat(isSuccessfully).isTrue();
     }
 }
