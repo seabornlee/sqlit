@@ -1,5 +1,6 @@
 package sqlit;
 
+import sqlit.exception.TableNotExistException;
 import sqlit.table.TableDefinition;
 
 import java.util.logging.Logger;
@@ -36,7 +37,10 @@ public class Dbms {
 
     public boolean insert(InsertStatement statement) {
         RawData rawData = RawData.load();
-        rawData.insert(statement);
+        if (!rawData.hasTable(statement.getTableName())) {
+            throw new TableNotExistException(statement.getTableName());
+        }
+        rawData.getValues().get(statement.getTableName()).add(statement.getValues());
         rawData.save();
         return true;
     }

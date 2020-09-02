@@ -1,7 +1,9 @@
 package sqlit;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import sqlit.exception.TableNotExistException;
 import sqlit.statement.InsertStatement;
 import sqlit.table.Column;
 import sqlit.table.TableDefinition;
@@ -9,6 +11,7 @@ import sqlit.table.TableDefinition;
 import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DbmsTest {
     @BeforeEach
@@ -67,6 +70,18 @@ class DbmsTest {
         column.setType("int");
         td.addColumn(column);
         return td;
+    }
+
+    @Test
+    void should_get_exception_when_insert_with_table_not_exist() {
+        Dbms dbms = new Dbms();
+        dbms.createTable(getTableDefinition("Users"));
+        InsertStatement insertStatement = new InsertStatement();
+        insertStatement.setTableName("Orders");
+        insertStatement.addColumn("OrderId", "1");
+
+        TableNotExistException exception = assertThrows(TableNotExistException.class, () -> dbms.insert(insertStatement));
+        assertThat(exception.getMessage()).isEqualTo("Table 'Orders' not found.");
     }
 
     @Test
