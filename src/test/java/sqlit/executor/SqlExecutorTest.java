@@ -14,6 +14,13 @@ class SqlExecutorTest {
     }
 
     @Test
+    void should_drop_table() {
+        SqlExecutor sqlExecutor = new SqlExecutor();
+        String result = sqlExecutor.execute("drop TABLE Users;");
+        assertThat(result).isEqualTo("Table 'Users' dropped.");
+    }
+
+    @Test
     void should_create_table() {
         SqlExecutor sqlExecutor = new SqlExecutor();
         String result = sqlExecutor.execute("CREATE TABLE Users ( PersonID int, LastName varchar(255) )");
