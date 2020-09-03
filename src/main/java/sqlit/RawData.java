@@ -62,6 +62,6 @@ public class RawData {
     }
 
     public boolean hasTable(String tableName) {
-        return getTableDefinitions().stream().anyMatch((td) -> td.getTableName().equals(tableName));
+        return getTableDefinitions().stream().anyMatch(td -> td.getTableName().equals(tableName));
     }
 }

@@ -25,7 +25,7 @@ public class InsertStatement {
 
     private static List<String> parseValues(String statement) {
         String substring = statement.substring(statement.lastIndexOf("(") + 1, statement.lastIndexOf(")"));
-        return stream(substring.split(",")).map(s -> s.trim().replaceAll("'", "")).collect(toList());
+        return stream(substring.split(",")).map(s -> s.trim().replace("'", "")).collect(toList());
     }
 
     private static List<String> parseColumns(String statement) {

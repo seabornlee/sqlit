@@ -9,7 +9,6 @@ import sqlit.statement.InsertStatement;
 import static java.util.stream.Collectors.joining;
 
 public class Dbms {
-    private static final Logger logger = Logger.getLogger(Dbms.class.getPackage().getName());
     public static final String DEFAULT_FILE_NAME = "sqlit.db";
 
     public boolean createTable(TableDefinition tableDefinition) {
