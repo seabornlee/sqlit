@@ -1,6 +1,7 @@
 package sqlit.executor;
 
 import sqlit.Dbms;
+import sqlit.statement.InsertStatement;
 import sqlit.table.TableDefinition;
 
 public class SqlExecutor {
@@ -20,6 +21,11 @@ public class SqlExecutor {
             String tableName = extractTableName(statementWithoutSemiColon);
             dbms.dropTable(tableName);
             return "Table '" + tableName + "' dropped.";
+        }
+
+        if (statement.toLowerCase().startsWith("insert into")) {
+            dbms.insert(InsertStatement.from(statement));
+            return "1 row inserted.";
         }
         return "No table found.";
     }

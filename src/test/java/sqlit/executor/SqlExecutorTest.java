@@ -21,6 +21,16 @@ class SqlExecutorTest {
     }
 
     @Test
+    void should_insert_record() {
+        SqlExecutor sqlExecutor = new SqlExecutor();
+        sqlExecutor.execute("CREATE TABLE Users ( PersonID int, LastName varchar(255) )");
+
+        String result = sqlExecutor.execute("insert into Users (PersonID, LastName) values (1, 'Seaborn Lee');");
+
+        assertThat(result).isEqualTo("1 row inserted.");
+    }
+
+    @Test
     void should_create_table() {
         SqlExecutor sqlExecutor = new SqlExecutor();
         String result = sqlExecutor.execute("CREATE TABLE Users ( PersonID int, LastName varchar(255) )");
